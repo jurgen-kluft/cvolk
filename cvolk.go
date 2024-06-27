@@ -7,6 +7,7 @@ import (
 
 func main() {
 	ccode.Init()
-	ccode.GenerateSpecificFiles(ccode.CLANGFORMAT | ccode.GITIGNORE)
+	ccode.GenerateClangFormat()
+	ccode.GenerateGitIgnore()
 	ccode.Generate(cpkg.GetPackage())
 }
