@@ -11,11 +11,11 @@ func GetPackage() *denv.Package {
 	unittestpkg := cunittest.GetPackage()
 
 	// The main (cvolk) package
-	mainpkg := denv.NewPackage("cvolk")
+	mainpkg := denv.NewPackage("github.com\\jurgen-kluft", "cvolk")
 	mainpkg.AddPackage(unittestpkg)
 
 	// 'cvolk' library
-	mainlib := denv.SetupCppLibProject("cvolk", "github.com\\jurgen-kluft\\cvolk")
+	mainlib := denv.SetupCppLibProject(mainpkg, "cvolk")
 
 	if denv.OS == "windows" {
 		mainlib.AddDefine("VK_USE_PLATFORM_WIN32_KHR")
@@ -28,9 +28,9 @@ func GetPackage() *denv.Package {
 	mainpkg.AddMainLib(mainlib)
 
 	// unittest project
-	maintest := denv.SetupDefaultCppTestProject("cvolk_test", "github.com\\jurgen-kluft\\cvolk")
+	maintest := denv.SetupCppTestProject(mainpkg, "cvolk_test")
 	maintest.AddDependencies(unittestpkg.GetMainLib()...)
-	maintest.Dependencies = append(maintest.Dependencies, mainlib)
+	maintest.AddDependency(mainlib)
 
 	mainpkg.AddUnittest(maintest)
 
